@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>29 Championship Series</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="snow-layer" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="29 Championship Series — главная">
+      <span class="brand-mark">✳</span><span>29 <b>CHAMPIONSHIP SERIES</b><small>DOTA 2 · CS2 · ТУРНИРЫ</small></span>
+    </a>
+    <nav>
+      <a href="#/" data-nav="home">Главная</a><a href="#/tournaments" data-nav="tournaments">Турниры</a><a href="#/ranking" data-nav="ranking">Рейтинг Dota 2</a><a href="#/cs2" data-nav="cs2">CS2</a><a href="#/cs2/ranking" data-nav="cs2">Рейтинг CS2</a>
+    </nav>
+    <button class="admin-open" id="adminOpen" hidden>Управление <span>↗</span></button>
+    <button id="loginOpen" class="admin-open" type="button">Вход администратора</button><button id="logoutOpen" class="admin-open" type="button" hidden>Выйти</button><button class="mobile-menu" id="mobileMenu" aria-label="Открыть меню">☰</button>
+  </header>
+
+  <dialog id="loginDialog"><form id="loginForm" style="padding:24px;min-width:min(360px,85vw);display:grid;gap:12px"><h2>Вход администратора</h2><input name="username" placeholder="Логин" required autocomplete="username"><input name="password" type="password" placeholder="Пароль" required autocomplete="current-password"><p id="loginError" style="color:#ff7b8c"></p><button class="primary-btn" type="submit">Войти</button><button type="button" id="loginCancel">Отмена</button></form></dialog>
+  <main>
+    <!-- ГЛАВНАЯ -->
+    <div class="view" id="view-home">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><i></i> DOTA 2 · ОНЛАЙН-ТУРНИР</div>
+          <div class="snowflake">❄</div>
+          <h1>WINTER CUP<br><em>2027</em></h1>
+          <div class="season"><span></span> SEASON 3 <span></span></div>
+          <p class="hero-description">Восемь команд. Одна цель. Только сильнейшие поднимут зимний кубок.</p>
+          <div class="hero-prize"><span>ПРИЗ ЗА 1 МЕСТО</span><b id="heroPrize"></b></div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#/tournament/winter-cup-2027">Смотреть турнир <b>→</b></a>
+            <a class="text-btn" href="#/tournament/winter-cup-2027/teams">Участники <span>↘</span></a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="orb orb-one"></div><div class="orb orb-two"></div>
+          <div class="trophy-glow"></div>
+          <img class="trophy-img" src="assets/trophy.webp" alt="Кубок Winter Cup 2027 Season 3" width="373" height="1000">
+          <div class="art-caption">THE ROAD TO<br><b>THE FINAL</b></div>
+        </div>
+        <div class="hero-bottom"><span>01 / 03</span><span class="line"></span><span>THE WINTER IS OURS</span></div>
+      </section>
+
+      <section class="ticker"><span>❄ 29 CHAMPIONSHIP SERIES</span><b>·</b><span>DOTA 2 CHAMPIONSHIP</span><b>·</b><span>SEASON 3</span><b>·</b><span>8 TEAMS</span><b>·</b><span>❄ 29 CHAMPIONSHIP SERIES</span></section>
+
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">БЛИЖАЙШИЙ ТУРНИР</div><h2>СКОРО <em>СТАРТ</em></h2></div><a class="text-btn" href="#/tournaments">Все турниры <span>↗</span></a></div>
+        <div id="featuredContainer"></div>
+      </section>
+
+      <section class="section stream-section">
+        <div class="section-heading"><div><div class="eyebrow">LIVE</div><h2>ТРАНС<em>ЛЯЦИЯ</em></h2></div><span class="stage-label">СМОТРИТЕ ТУРНИР ОНЛАЙН</span></div>
+        <div id="streamHome"></div>
+      </section>
+    </div>
+
+    <!-- СПИСОК ТУРНИРОВ -->
+    <div class="view" id="view-tournaments" hidden>
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">ВСЕ ТУРНИРЫ</div><h2>ТУР<em>НИРЫ</em></h2></div><p>Выберите турнир, чтобы посмотреть команды, игроков, группы, сетку и результаты матчей.</p></div>
+        <div class="tour-grid" id="tournamentsContainer"></div>
+      </section>
+    </div>
+
+    <!-- ОБЩИЙ РЕЙТИНГ ИГРОКОВ -->
+    <div class="view" id="view-ranking" hidden>
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">29 CHAMPIONSHIP SERIES</div><h2>РЕЙТИНГ <em>ИГРОКОВ</em></h2></div><p id="rankingCount"></p></div>
+        <p class="ranking-description">Рейтинг по результатам команд в WINTER CUP 2025 Season 1 и WINTER CUP 2026 Season 2. Победа: +10, участие в матче: +3, чемпионство: +50, второе место: +25, третье место: +15. Матчи, завершившиеся техническим результатом, не учитываются. Статистика приписывается всем заявленным игрокам команды; это не индивидуальная статистика Dota 2.</p>
+        <div class="ranking-scroll"><table class="ranking-table"><thead><tr><th>#</th><th>Игрок</th><th>Команда</th><th>Турниры</th><th>Матчи</th><th>Победы</th><th>Поражения</th><th>Очки</th></tr></thead><tbody id="rankingBody"></tbody></table></div>
+      </section>
+    </div>
+
+    <div class="view" id="view-player" hidden><section class="section" id="playerProfile"></section></div>
+
+    <div class="view" id="view-cs2" hidden><section class="section"><div class="section-heading"><div><div class="eyebrow">COUNTER-STRIKE 2</div><h2>ТУРНИРЫ <em>CS2</em></h2></div><a class="text-btn" href="#/cs2/ranking">Рейтинг игроков ↗</a></div><div id="csLanding"></div></section></div>
+    <div class="view" id="view-cs2-tournament" hidden><section class="section" id="csTournament"></section></div>
+    <div class="view" id="view-cs2-ranking" hidden><section class="section" id="csRanking"></section></div>
+    <div class="view" id="view-cs2-player" hidden><section class="section" id="csPlayer"></section></div>
+    <!-- СТРАНИЦА ТУРНИРА -->
+    <div class="view" id="view-tournament" hidden>
+      <div class="t-head">
+        <a class="back-link" href="#/tournaments">← ВСЕ ТУРНИРЫ</a>
+        <h1 class="t-title" id="tTitle"></h1>
+        <div class="chips" id="tChips"></div>
+        <nav class="sub-tabs" id="subTabs" aria-label="Разделы турнира"></nav>
+      </div>
+
+      <div class="t-pane" data-pane="overview" hidden>
+        <section class="section">
+          <div class="section-heading"><div><div class="eyebrow">О ТУРНИРЕ</div><h2>ПУТЬ К <em>КУБКУ</em></h2></div><p id="overviewText"></p></div>
+          <div class="stats-grid" id="statsContainer"></div>
+          <div id="resultsContainer"></div>
+        </section>
+      </div>
+
+      <div class="t-pane" data-pane="stream" hidden>
+        <section class="section">
+          <div class="section-heading"><div><div class="eyebrow">LIVE</div><h2>ТРАНС<em>ЛЯЦИЯ</em></h2></div><span class="stage-label">TWITCH</span></div>
+          <div id="streamTab"></div>
+        </section>
+      </div>
+
+      <div class="t-pane" data-pane="teams" hidden>
+        <section class="section">
+          <div class="section-heading"><div><div class="eyebrow">TEAMS & ROSTERS</div><h2>КОМАНДЫ И <em>ИГРОКИ</em></h2></div><span class="stage-label">СОСТАВЫ ПО ГРУППАМ</span></div>
+          <div id="teamsContainer"></div>
+        </section>
+      </div>
+
+      <div class="t-pane" data-pane="groups" hidden>
+        <section class="section">
+          <div class="section-heading"><div><div class="eyebrow">GROUP STAGE</div><h2>ГРУППОВОЙ <em>ЭТАП</em></h2></div><div class="legend" id="groupsLegend"><span class="qualified"></span> Выход в плей-офф</div></div>
+          <div class="groups-grid" id="groupsContainer"></div>
+          <p class="hint">В плей-офф выходят две лучшие команды из каждой группы.</p>
+        </section>
+      </div>
+
+      <div class="t-pane" data-pane="playoffs" hidden>
+        <section class="section">
+          <div class="section-heading"><div><div class="eyebrow">FINAL STAGE</div><h2>ПУТЬ К <em>ФИНАЛУ</em></h2></div><span class="stage-label" id="playoffsLabel"></span></div>
+          <div class="bracket" id="bracketContainer"></div>
+        </section>
+      </div>
+
+      <div class="t-pane" data-pane="matches" hidden>
+        <section class="section">
+          <div class="section-heading"><div><div class="eyebrow">SCHEDULE & RESULTS</div><h2>МАТЧИ И <em>РЕЗУЛЬТАТЫ</em></h2></div><span class="stage-label" id="matchesLabel"></span></div>
+          <div class="match-list" id="matchesContainer"></div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      <a class="brand footer-brand" href="#/"><span class="brand-mark">✳</span><span>29 <b>CHAMPIONSHIP SERIES</b><small>DOTA 2 · CS2 · ТУРНИРЫ</small></span></a>
+      <span>DOTA 2 · 29 CHAMPIONSHIP SERIES</span><a href="#/" id="toTop">НАВЕРХ ↑</a>
+    </footer>
+  </main>
+
+  <dialog id="adminDialog">
+    <form method="dialog" class="dialog-head"><div><div class="eyebrow">TOURNAMENT CONTROL</div><h2>УПРАВЛЕНИЕ</h2></div><button class="close-dialog" aria-label="Закрыть">×</button></form>
+    <div class="admin-content">
+      <div class="admin-notice">Изменения сохраняются в этом браузере. Это локальная демо-панель без серверной авторизации.</div>
+      <div class="admin-tabs"><button class="active" data-tab="teams">Команды</button><button data-tab="players">Игроки</button><button data-tab="scores">Результаты</button><button data-tab="settings">Турнир</button></div>
+      <div id="adminPanel"></div>
+      <div class="admin-footer"><button class="secondary-btn" id="resetData">Сбросить демо-данные</button><button class="primary-btn" id="saveClose">Готово <b>✓</b></button></div>
+    </div>
+  </dialog>
+  <script src="auth.js"></script><script src="app.js"></script><script src="cs2.js"></script>
+</body>
+</html>
